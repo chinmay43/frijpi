@@ -8,8 +8,11 @@
     "body-parser": "^1.15.2",
     "config": "^1.21.0",
     "express": "^4.14.0",
+    "onoff": "^1.1.1",
+    "pi-gpio": "0.0.8",
     "redis": "^2.6.2",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "wiring-pi": "^2.2.1"
   },
   "scripts": {
     "test": "npm test"

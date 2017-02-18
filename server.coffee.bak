@@ -5,27 +5,31 @@ io = require('socket.io-client')
 socket = io.connect('http://52.77.228.237',{
 	port:8000
 })
+gpio = require("pi-gpio")
  
-Gpio = require('onoff').Gpio
-lock = new Gpio(24,"out")
-
 
 
 socket.on 'connect', (socket) ->
 	console.log "Connected!"
 socket.emit "joinroom", {id:1}
 
+gpio.close(8)
 socket.on "unlock", (socket) ->
-	lock.writeSync 0
+	gpio.open 10, "out", (err) ->		# Open pin 8 for output 
+	    console.log "Error opening 8 : ",err
+	    gpio.write 10, 0, () ->			# Set pin 8 low (0) 
+		gpio.close(10)						# Close pin 8 
 	console.log "Unlock received"
 
 socket.on "lock", (socket) ->
-	lock.writeSync 1
+	gpio.open 10, "output", (err) ->		# Open pin 8 for output 
+	    console.log "Error opening 8 : ",err
+	    gpio.write 10, 1, () ->			# Set pin 8 high (1) 
+		gpio.close(10)						# Close pin 8 
 	console.log "Lock received"
 
-process.on 'SIGINT', () ->
-	lock.unexport()
 console.log socket.connected
+#frijRouter = require('./routes/frij')
 
 port = process.env.PORT ? 8001
 
